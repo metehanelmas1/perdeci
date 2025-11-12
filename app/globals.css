@@ -122,29 +122,39 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* Removed body background color so curtain loader shows immediately without any background flash */
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background: transparent;
   }
 }
 
 @layer utilities {
-  /* Updated curtain animations with cinematic easing */
-  @keyframes curtain-left {
+  /* Animasyon başlangıç ve bitiş pozisyonları düzeltildi - perdeler ortadan yanlara açılıyor */
+  @keyframes curtain-left-realistic {
     0% {
-      transform: translateX(0);
+      left: 0;
     }
     100% {
-      transform: translateX(-100%);
+      left: -100%;
     }
   }
 
-  @keyframes curtain-right {
+  @keyframes curtain-right-realistic {
     0% {
-      transform: translateX(0);
+      right: 0;
     }
     100% {
-      transform: translateX(100%);
+      right: -100%;
     }
+  }
+
+  .animate-curtain-left {
+    animation: curtain-left-realistic 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .animate-curtain-right {
+    animation: curtain-right-realistic 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
   @keyframes fade-out {
