@@ -8,8 +8,7 @@ const products = [
     id: 1,
     name: "Luna Tül Perde",
     category: "Tül Perdeler",
-    price: "2.499",
-    originalPrice: "3.200",
+    
     badge: "Yeni Sezon",
     image: "/luxury-white-sheer-curtain-fabric-close-up.jpg",
   },
@@ -17,8 +16,7 @@ const products = [
     id: 2,
     name: "Zenith Zebra Perde",
     category: "Zebra Perdeler",
-    price: "1.899",
-    originalPrice: "2.400",
+
     badge: "İndirim",
     image: "/modern-gray-zebra-blinds-in-office.jpg",
   },
@@ -97,10 +95,6 @@ export function FeaturedProducts() {
                 <p className="text-xs text-accent uppercase tracking-wider">{product.category}</p>
                 <h3 className="font-serif text-xl text-primary">{product.name}</h3>
                 <div className="flex items-center gap-3">
-                  <span className="text-lg font-semibold text-foreground">{product.price} ₺</span>
-                  {product.originalPrice && (
-                    <span className="text-sm text-muted-foreground line-through">{product.originalPrice} ₺</span>
-                  )}
                 </div>
               </div>
             </div>

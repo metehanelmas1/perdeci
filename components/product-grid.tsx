@@ -9,7 +9,6 @@ const products = [
     id: 1,
     name: "Modern Stor Perde",
     category: "Stor Perde",
-    price: 450,
     image: "/modern-roller-blinds-in-minimalist-room.jpg",
     hoverImage: "/modern-room-with-roller-blinds-installed.jpg",
   },
@@ -17,7 +16,6 @@ const products = [
     id: 2,
     name: "Zarif Tül Perde",
     category: "Tül Perde",
-    price: 320,
     image: "/elegant-sheer-curtains-in-bright-living-room.jpg",
     hoverImage: "/elegant-living-room-with-sheer-curtains.jpg",
   },
@@ -25,7 +23,6 @@ const products = [
     id: 3,
     name: "Zebra Perde - Gri",
     category: "Zebra Perde",
-    price: 580,
     image: "/modern-gray-zebra-blinds-in-office.jpg",
     hoverImage: "/modern-office-with-zebra-blinds.jpg",
   },
@@ -33,7 +30,6 @@ const products = [
     id: 4,
     name: "Blackout Perde - Bej",
     category: "Blackout Perde",
-    price: 680,
     image: "/elegant-velvet-blackout-curtains-beige.jpg",
     hoverImage: "/elegant-bedroom-with-blackout-curtains.jpg",
   },
@@ -41,7 +37,6 @@ const products = [
     id: 5,
     name: "Klasik Tül",
     category: "Tül Perde",
-    price: 280,
     image: "/luxury-white-sheer-curtain-fabric-close-up.jpg",
     hoverImage: "/bright-room-with-white-sheer-curtains.jpg",
   },
@@ -49,7 +44,6 @@ const products = [
     id: 6,
     name: "Premium Stor",
     category: "Stor Perde",
-    price: 520,
     image: "/premium-roller-blinds-beige-color.jpg",
     hoverImage: "/modern-living-room-with-premium-roller-blinds.jpg",
   },
@@ -57,7 +51,6 @@ const products = [
     id: 7,
     name: "Çiçek Desenli Perde",
     category: "Stor Perde",
-    price: 480,
     image: "/floral-pattern-curtain-fabric.jpg",
     hoverImage: "/cozy-room-with-floral-curtains.jpg",
   },
@@ -65,7 +58,6 @@ const products = [
     id: 8,
     name: "Minimalist Zebra",
     category: "Zebra Perde",
-    price: 620,
     image: "/zebra-blinds-dual-layer-window-treatment.jpg",
     hoverImage: "/minimalist-room-with-zebra-blinds.jpg",
   },
@@ -126,9 +118,7 @@ export function ProductGrid() {
                 {product.name}
               </h3>
               <div className="flex items-center justify-between">
-                <p className="text-lg font-semibold text-foreground">
-                  {product.price}₺<span className="text-sm text-muted-foreground">/m²</span>
-                </p>
+                
                 <button className="text-sm text-accent hover:underline">Detayları Gör</button>
               </div>
             </div>

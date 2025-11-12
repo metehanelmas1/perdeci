@@ -187,21 +187,8 @@ export function Footer() {
             {/* Copyright */}
             <p className="text-sm text-[#C4B5A0]">© 2025 Perde Dünyası. Tüm hakları saklıdır.</p>
 
-            {/* Payment Methods */}
-            <div className="flex items-center gap-4">
-              <span className="text-xs text-[#C4B5A0]">Güvenli Ödeme:</span>
-              <div className="flex items-center gap-2 opacity-60">
-                <div className="bg-white rounded px-2 py-1">
-                  <span className="text-xs font-semibold text-blue-600">VISA</span>
-                </div>
-                <div className="bg-white rounded px-2 py-1">
-                  <span className="text-xs font-semibold text-orange-600">Mastercard</span>
-                </div>
-                <div className="bg-white rounded px-2 py-1">
-                  <span className="text-xs font-semibold text-red-600">TROY</span>
-                </div>
-              </div>
-            </div>
+         
+        
 
             {/* Legal Links */}
             <div className="flex flex-wrap justify-center gap-4 text-xs">
