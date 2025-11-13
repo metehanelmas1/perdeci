@@ -39,7 +39,7 @@ export function ProductFilters() {
   ]
 
   return (
-    <aside className="bg-card border border-border rounded-xl p-6 h-fit sticky top-24">
+    <aside className="bg-card border border-border rounded-xl p-4 md:p-6 h-fit lg:sticky lg:top-24">
       <h2 className="font-serif text-xl text-foreground mb-6">Filtrele</h2>
 
       <div className="space-y-6">
