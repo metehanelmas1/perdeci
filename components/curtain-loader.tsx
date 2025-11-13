@@ -16,7 +16,7 @@ export function CurtainLoader() {
     const ctx = canvas.getContext("2d", { alpha: true })
     if (!ctx) return
 
-    // HD kalite ayarları - mobil ve desktop
+    // TANRI GİBİ KALİTE AYARLARI
     const setQuality = () => {
       ctx.imageSmoothingEnabled = true
       ctx.imageSmoothingQuality = "high"
@@ -52,15 +52,13 @@ export function CurtainLoader() {
       let drawW, drawH, offsetX, offsetY
       
       if (videoRatio > canvasRatio) {
-        // Video daha geniş - yüksekliği eşitle
-        drawH = ch * 1.15 // PC'de height'ı %15 büyüt
+        drawH = ch * 1.15
         drawW = drawH * videoRatio
         offsetX = (cw - drawW) / 2
         offsetY = (ch - drawH) / 2
       } else {
-        // Video daha dar - genişliği eşitle
         drawW = cw
-        drawH = (cw / videoRatio) * 1.15 // PC'de height'ı %15 büyüt
+        drawH = (cw / videoRatio) * 1.15
         offsetX = 0
         offsetY = (ch - drawH) / 2
       }
@@ -71,55 +69,38 @@ export function CurtainLoader() {
         const imageData = ctx.getImageData(0, 0, cw, ch)
         const d = imageData.data
 
-        // Her pixel için işlem - sadece beyazları temizle
-        for (let y = 0; y < ch; y++) {
-          for (let x = 0; x < cw; x++) {
-            const i = (y * cw + x) * 4
-            const r = d[i]
-            const g = d[i + 1]
-            const b = d[i + 2]
-            const a = d[i + 3]
+        // Optimize edilmiş beyaz temizleme
+        const len = d.length
+        for (let i = 0; i < len; i += 4) {
+          const r = d[i]
+          const g = d[i + 1]
+          const b = d[i + 2]
+          const a = d[i + 3]
 
-            // BEYAZ ALGILAMA - ince ayarlı köşe temizleme
-            let whiteMask = 0
-            
-            const avg = (r + g + b) / 3
-            const maxCh = Math.max(r, g, b)
-            const minCh = Math.min(r, g, b)
-            const diff = maxCh - minCh
-            
-            // Beyaz: parlak + renksiz - ince ayarlı
-            if (avg > 188 && diff < 33 && minCh > 178) {
-              whiteMask = 1
-            } else if (avg > 168 && diff < 39 && minCh > 158) {
-              const brightness = (avg - 168) / 30
-              const colorless = 1 - (diff / 39)
-              whiteMask = Math.min(1, brightness * colorless * 0.98)
-            } else if (avg > 148 && diff < 44 && minCh > 138) {
-              const brightness = (avg - 148) / 50
-              const colorless = 1 - (diff / 44)
-              whiteMask = Math.min(1, brightness * colorless * 0.93)
-            } else if (avg > 128 && diff < 49 && minCh > 118) {
-              const brightness = (avg - 128) / 65
-              const colorless = 1 - (diff / 49)
-              whiteMask = Math.min(1, brightness * colorless * 0.81)
-            } else if (avg > 108 && diff < 54 && minCh > 98) {
-              const brightness = (avg - 108) / 80
-              const colorless = 1 - (diff / 54)
-              whiteMask = Math.min(1, brightness * colorless * 0.62)
-            } else if (avg > 90 && diff < 58 && minCh > 80) {
-              const brightness = (avg - 90) / 95
-              const colorless = 1 - (diff / 58)
-              whiteMask = Math.min(1, brightness * colorless * 0.4)
-            } else if (avg > 75 && diff < 61 && minCh > 65) {
-              const brightness = (avg - 75) / 110
-              const colorless = 1 - (diff / 61)
-              whiteMask = Math.min(1, brightness * colorless * 0.22)
-            }
-
-            // Alpha güncelle - ince ayarlı temizleme
-            d[i + 3] = Math.round(a * (1 - whiteMask * 0.999))
+          const avg = (r + g + b) * 0.333
+          const maxCh = Math.max(r, g, b)
+          const minCh = Math.min(r, g, b)
+          const diff = maxCh - minCh
+          
+          let whiteMask = 0
+          
+          if (avg > 188 && diff < 33 && minCh > 178) {
+            whiteMask = 1
+          } else if (avg > 168 && diff < 39 && minCh > 158) {
+            whiteMask = ((avg - 168) * 0.033) * (1 - diff * 0.026) * 0.98
+          } else if (avg > 148 && diff < 44 && minCh > 138) {
+            whiteMask = ((avg - 148) * 0.02) * (1 - diff * 0.023) * 0.93
+          } else if (avg > 128 && diff < 49 && minCh > 118) {
+            whiteMask = ((avg - 128) * 0.015) * (1 - diff * 0.02) * 0.81
+          } else if (avg > 108 && diff < 54 && minCh > 98) {
+            whiteMask = ((avg - 108) * 0.0125) * (1 - diff * 0.019) * 0.62
+          } else if (avg > 90 && diff < 58 && minCh > 80) {
+            whiteMask = ((avg - 90) * 0.011) * (1 - diff * 0.017) * 0.4
+          } else if (avg > 75 && diff < 61 && minCh > 65) {
+            whiteMask = ((avg - 75) * 0.009) * (1 - diff * 0.016) * 0.22
           }
+
+          d[i + 3] = (a * (1 - whiteMask * 0.999)) | 0
         }
 
         ctx.putImageData(imageData, 0, 0)
@@ -131,9 +112,8 @@ export function CurtainLoader() {
     }
 
     const onLoaded = () => {
-      video.playbackRate = 1.50 // Perdeyi hızlandır
+      video.playbackRate = 1.60
       
-      // Mobil için video oynatma garantisi
       const playVideo = () => {
         video.play()
           .then(() => {
@@ -142,7 +122,6 @@ export function CurtainLoader() {
           })
           .catch((e) => {
             console.error("Video play error:", e)
-            // Mobilde hata olursa tekrar dene
             setTimeout(playVideo, 100)
           })
       }
@@ -186,7 +165,7 @@ export function CurtainLoader() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ 
+        style={{
           background: "transparent",
           width: "100vw",
           height: "100vh",
