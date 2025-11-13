@@ -45,7 +45,7 @@ export function CurtainLoader() {
 
       ctx.clearRect(0, 0, cw, ch)
       
-      // Video'yu OLDUĞU GİBİ çiz - aspect ratio koru, ekranı kapla
+      // Video'yu çiz - aspect ratio koru, ekranı kapla
       const videoRatio = vw / vh
       const canvasRatio = cw / ch
       
@@ -53,14 +53,14 @@ export function CurtainLoader() {
       
       if (videoRatio > canvasRatio) {
         // Video daha geniş - yüksekliği eşitle
-        drawH = ch
-        drawW = ch * videoRatio
+        drawH = ch * 1.15 // PC'de height'ı %15 büyüt
+        drawW = drawH * videoRatio
         offsetX = (cw - drawW) / 2
-        offsetY = 0
+        offsetY = (ch - drawH) / 2
       } else {
         // Video daha dar - genişliği eşitle
         drawW = cw
-        drawH = cw / videoRatio
+        drawH = (cw / videoRatio) * 1.15 // PC'de height'ı %15 büyüt
         offsetX = 0
         offsetY = (ch - drawH) / 2
       }
@@ -80,7 +80,7 @@ export function CurtainLoader() {
             const b = d[i + 2]
             const a = d[i + 3]
 
-            // BEYAZ ALGILAMA - dengeli köşe temizleme
+            // BEYAZ ALGILAMA - ince ayarlı köşe temizleme
             let whiteMask = 0
             
             const avg = (r + g + b) / 3
@@ -88,37 +88,37 @@ export function CurtainLoader() {
             const minCh = Math.min(r, g, b)
             const diff = maxCh - minCh
             
-            // Beyaz: parlak + renksiz - dengeli
-            if (avg > 190 && diff < 32 && minCh > 180) {
+            // Beyaz: parlak + renksiz - ince ayarlı
+            if (avg > 188 && diff < 33 && minCh > 178) {
               whiteMask = 1
-            } else if (avg > 170 && diff < 38 && minCh > 160) {
-              const brightness = (avg - 170) / 30
-              const colorless = 1 - (diff / 38)
+            } else if (avg > 168 && diff < 39 && minCh > 158) {
+              const brightness = (avg - 168) / 30
+              const colorless = 1 - (diff / 39)
               whiteMask = Math.min(1, brightness * colorless * 0.98)
-            } else if (avg > 150 && diff < 43 && minCh > 140) {
-              const brightness = (avg - 150) / 50
-              const colorless = 1 - (diff / 43)
-              whiteMask = Math.min(1, brightness * colorless * 0.92)
-            } else if (avg > 130 && diff < 48 && minCh > 120) {
-              const brightness = (avg - 130) / 65
-              const colorless = 1 - (diff / 48)
-              whiteMask = Math.min(1, brightness * colorless * 0.78)
-            } else if (avg > 110 && diff < 53 && minCh > 100) {
-              const brightness = (avg - 110) / 80
-              const colorless = 1 - (diff / 53)
-              whiteMask = Math.min(1, brightness * colorless * 0.58)
-            } else if (avg > 92 && diff < 57 && minCh > 82) {
-              const brightness = (avg - 92) / 95
-              const colorless = 1 - (diff / 57)
-              whiteMask = Math.min(1, brightness * colorless * 0.35)
-            } else if (avg > 78 && diff < 60 && minCh > 68) {
-              const brightness = (avg - 78) / 110
-              const colorless = 1 - (diff / 60)
-              whiteMask = Math.min(1, brightness * colorless * 0.18)
+            } else if (avg > 148 && diff < 44 && minCh > 138) {
+              const brightness = (avg - 148) / 50
+              const colorless = 1 - (diff / 44)
+              whiteMask = Math.min(1, brightness * colorless * 0.93)
+            } else if (avg > 128 && diff < 49 && minCh > 118) {
+              const brightness = (avg - 128) / 65
+              const colorless = 1 - (diff / 49)
+              whiteMask = Math.min(1, brightness * colorless * 0.81)
+            } else if (avg > 108 && diff < 54 && minCh > 98) {
+              const brightness = (avg - 108) / 80
+              const colorless = 1 - (diff / 54)
+              whiteMask = Math.min(1, brightness * colorless * 0.62)
+            } else if (avg > 90 && diff < 58 && minCh > 80) {
+              const brightness = (avg - 90) / 95
+              const colorless = 1 - (diff / 58)
+              whiteMask = Math.min(1, brightness * colorless * 0.4)
+            } else if (avg > 75 && diff < 61 && minCh > 65) {
+              const brightness = (avg - 75) / 110
+              const colorless = 1 - (diff / 61)
+              whiteMask = Math.min(1, brightness * colorless * 0.22)
             }
 
-            // Alpha güncelle - dengeli temizleme
-            d[i + 3] = Math.round(a * (1 - whiteMask * 0.998))
+            // Alpha güncelle - ince ayarlı temizleme
+            d[i + 3] = Math.round(a * (1 - whiteMask * 0.999))
           }
         }
 
@@ -171,7 +171,7 @@ export function CurtainLoader() {
   if (!isLoading) return null
 
   return (
-    <div className="fixed inset-0 z-[9999] pointer-events-none">
+    <div className="fixed inset-0 z-[9999] pointer-events-none overflow-hidden">
       <video
         ref={videoRef}
         src="/video-animation.mp4"
@@ -186,7 +186,14 @@ export function CurtainLoader() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
-        style={{ background: "transparent" }}
+        style={{ 
+          background: "transparent",
+          width: "100vw",
+          height: "100vh",
+          maxWidth: "100vw",
+          maxHeight: "100vh",
+          objectFit: "cover"
+        }}
       />
     </div>
   )
