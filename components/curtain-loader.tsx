@@ -72,7 +72,7 @@ export function CurtainLoader() {
             const b = d[i + 2]
             const a = d[i + 3]
 
-            // BEYAZ ALGILAMA - sadece arka plan beyazlarını temizle
+            // BEYAZ ALGILAMA - agresif beyaz temizleme
             let whiteMask = 0
             
             const avg = (r + g + b) / 3
@@ -80,17 +80,44 @@ export function CurtainLoader() {
             const minCh = Math.min(r, g, b)
             const diff = maxCh - minCh
             
-            // Beyaz: parlak + renksiz
-            if (avg > 200 && diff < 25 && minCh > 190) {
+            // Beyaz: parlak + renksiz - agresif ama yumuşak
+            if (avg > 190 && diff < 30 && minCh > 180) {
+              // Çok parlak beyaz
               whiteMask = 1
-            } else if (avg > 180 && diff < 30 && minCh > 170) {
-              whiteMask = 0.9
-            } else if (avg > 160 && diff < 35 && minCh > 150) {
-              whiteMask = 0.7
+            } else if (avg > 170 && diff < 35 && minCh > 160) {
+              // Parlak beyaz
+              const brightness = (avg - 170) / 30
+              const colorless = 1 - (diff / 35)
+              whiteMask = Math.min(1, brightness * colorless * 0.98)
+            } else if (avg > 150 && diff < 40 && minCh > 140) {
+              // Açık gri
+              const brightness = (avg - 150) / 50
+              const colorless = 1 - (diff / 40)
+              whiteMask = Math.min(1, brightness * colorless * 0.92)
+            } else if (avg > 130 && diff < 45 && minCh > 120) {
+              // Orta açık gri
+              const brightness = (avg - 130) / 65
+              const colorless = 1 - (diff / 45)
+              whiteMask = Math.min(1, brightness * colorless * 0.78)
+            } else if (avg > 110 && diff < 50 && minCh > 100) {
+              // Hafif açık ton
+              const brightness = (avg - 110) / 80
+              const colorless = 1 - (diff / 50)
+              whiteMask = Math.min(1, brightness * colorless * 0.55)
+            } else if (avg > 95 && diff < 52 && minCh > 85) {
+              // Çok hafif açık ton
+              const brightness = (avg - 95) / 95
+              const colorless = 1 - (diff / 52)
+              whiteMask = Math.min(1, brightness * colorless * 0.32)
+            } else if (avg > 82 && diff < 55 && minCh > 72) {
+              // Ultra hafif (tam kapanmadaki son beyazlıklar)
+              const brightness = (avg - 82) / 110
+              const colorless = 1 - (diff / 55)
+              whiteMask = Math.min(1, brightness * colorless * 0.15)
             }
 
-            // Alpha güncelle - sadece beyazlar şeffaf
-            d[i + 3] = Math.round(a * (1 - whiteMask * 0.99))
+            // Alpha güncelle - maksimum temizleme
+            d[i + 3] = Math.round(a * (1 - whiteMask * 0.998))
           }
         }
 
