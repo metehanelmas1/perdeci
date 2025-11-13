@@ -42,6 +42,8 @@ export default function RootLayout({
         <CurtainLoader />
         {children}
         <Analytics />
+
+        
       </body>
     </html>
   )
