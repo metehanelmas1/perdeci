@@ -229,8 +229,8 @@ export function ProductDetailClient({ productId }: ProductDetailClientProps) {
 
   return (
     <main className="min-h-screen pt-24 pb-16 bg-background">
-      <div className="container mx-auto px-6">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">
           <Link href="/" className="hover:text-foreground transition-colors">
             Ana Sayfa
           </Link>
@@ -239,12 +239,12 @@ export function ProductDetailClient({ productId }: ProductDetailClientProps) {
             Ürünler
           </Link>
           <span>/</span>
-          <span className="text-foreground">{product.name}</span>
+          <span className="text-foreground truncate">{product.name}</span>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-12 lg:mb-16">
           <div className="space-y-4">
-            <div className="relative aspect-square rounded-xl overflow-hidden bg-muted">
+            <div className="relative aspect-square rounded-lg sm:rounded-xl overflow-hidden bg-muted">
               <Image
                 src={product.images[selectedImage] || "/placeholder.svg"}
                 alt={product.name}
@@ -253,18 +253,20 @@ export function ProductDetailClient({ productId }: ProductDetailClientProps) {
               />
               <button
                 onClick={() => setIsFavorite(!isFavorite)}
-                className="absolute top-4 right-4 p-3 bg-background/80 backdrop-blur-sm rounded-full hover:bg-background transition-colors"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 sm:p-3 bg-background/80 backdrop-blur-sm rounded-full hover:bg-background transition-colors"
               >
-                <Heart className={`h-6 w-6 ${isFavorite ? "fill-red-500 text-red-500" : "text-muted-foreground"}`} />
+                <Heart
+                  className={`h-5 w-5 sm:h-6 sm:w-6 ${isFavorite ? "fill-red-500 text-red-500" : "text-muted-foreground"}`}
+                />
               </button>
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {product.images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                  className={`relative aspect-square rounded-md sm:rounded-lg overflow-hidden border-2 transition-all ${
                     selectedImage === index ? "border-accent" : "border-border hover:border-accent/50"
                   }`}
                 >
@@ -280,20 +282,24 @@ export function ProductDetailClient({ productId }: ProductDetailClientProps) {
           </div>
 
           <div>
-            <p className="text-sm text-accent mb-2">{product.category}</p>
-            <h1 className="font-serif text-4xl text-foreground mb-4">{product.name}</h1>
-            <p className="text-sm text-accent font-medium mb-6">Özel Fiyat Teklifi İçin İletişime Geçin</p>
+            <p className="text-xs sm:text-sm text-accent mb-2">{product.category}</p>
+            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-foreground mb-3 sm:mb-4">{product.name}</h1>
+            <p className="text-xs sm:text-sm text-accent font-medium mb-4 sm:mb-6">
+              Özel Fiyat Teklifi İçin İletişime Geçin
+            </p>
 
-            <p className="text-muted-foreground leading-relaxed mb-8">{product.description}</p>
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 sm:mb-8">
+              {product.description}
+            </p>
 
-            <div className="mb-8">
-              <h3 className="font-medium text-foreground mb-4">Renk Seçimi</h3>
-              <div className="flex gap-3">
+            <div className="mb-6 sm:mb-8">
+              <h3 className="font-medium text-sm sm:text-base text-foreground mb-3 sm:mb-4">Renk Seçimi</h3>
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 {product.colors.map((color, index) => (
                   <button
                     key={color}
                     onClick={() => setSelectedColor(index)}
-                    className={`px-6 py-3 border-2 rounded-lg transition-all ${
+                    className={`px-4 sm:px-6 py-2 sm:py-3 text-sm border-2 rounded-lg transition-all ${
                       selectedColor === index
                         ? "border-accent bg-accent/10 text-accent"
                         : "border-border text-foreground hover:border-accent/50"
@@ -305,54 +311,54 @@ export function ProductDetailClient({ productId }: ProductDetailClientProps) {
               </div>
             </div>
 
-            <div className="flex gap-4 mb-12">
-              <button className="flex-1 bg-accent text-accent-foreground py-4 rounded-lg font-medium hover:bg-accent/90 transition-colors">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12">
+              <button className="flex-1 bg-accent text-accent-foreground py-3 sm:py-4 rounded-lg text-sm sm:text-base font-medium hover:bg-accent/90 transition-colors">
                 Teklif Al
               </button>
-              <button className="px-6 py-4 border-2 border-accent text-accent rounded-lg font-medium hover:bg-accent/10 transition-colors">
+              <button className="flex-1 sm:flex-none sm:px-6 py-3 sm:py-4 border-2 border-accent text-accent rounded-lg text-sm sm:text-base font-medium hover:bg-accent/10 transition-colors">
                 Ücretsiz Ölçü
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="flex items-center gap-3 p-4 bg-muted rounded-lg">
-                <Truck className="h-5 w-5 text-accent" />
-                <span className="text-sm text-foreground">Ücretsiz Kargo</span>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
+              <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-muted rounded-lg">
+                <Truck className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-foreground">Ücretsiz Kargo</span>
               </div>
-              <div className="flex items-center gap-3 p-4 bg-muted rounded-lg">
-                <Shield className="h-5 w-5 text-accent" />
-                <span className="text-sm text-foreground">Garanti</span>
+              <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-muted rounded-lg">
+                <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-foreground">Garanti</span>
               </div>
-              <div className="flex items-center gap-3 p-4 bg-muted rounded-lg">
-                <Ruler className="h-5 w-5 text-accent" />
-                <span className="text-sm text-foreground">Ölçü Alınır</span>
+              <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-muted rounded-lg">
+                <Ruler className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-foreground">Ölçü Alınır</span>
               </div>
-              <div className="flex items-center gap-3 p-4 bg-muted rounded-lg">
-                <Package className="h-5 w-5 text-accent" />
-                <span className="text-sm text-foreground">Montaj</span>
+              <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 bg-muted rounded-lg">
+                <Package className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0" />
+                <span className="text-xs sm:text-sm text-foreground">Montaj</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-border pt-12">
+        <div className="border-t border-border pt-8 sm:pt-12">
           <div className="max-w-4xl">
-            <h2 className="font-serif text-2xl text-foreground mb-6">Ürün Özellikleri</h2>
-            <ul className="space-y-3 mb-8">
+            <h2 className="font-serif text-xl sm:text-2xl text-foreground mb-4 sm:mb-6">Ürün Özellikleri</h2>
+            <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
               {product.features.map((feature, index) => (
-                <li key={index} className="flex items-center gap-3 text-muted-foreground">
-                  <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                <li key={index} className="flex items-center gap-2 sm:gap-3 text-sm sm:text-base text-muted-foreground">
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
                   {feature}
                 </li>
               ))}
             </ul>
 
-            <h2 className="font-serif text-2xl text-foreground mb-6">Teknik Özellikler</h2>
-            <div className="grid sm:grid-cols-2 gap-4">
+            <h2 className="font-serif text-xl sm:text-2xl text-foreground mb-4 sm:mb-6">Teknik Özellikler</h2>
+            <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
               {Object.entries(product.specifications).map(([key, value]) => (
-                <div key={key} className="p-4 bg-muted rounded-lg">
-                  <p className="text-sm text-muted-foreground capitalize mb-1">{key}</p>
-                  <p className="text-foreground font-medium">{value}</p>
+                <div key={key} className="p-3 sm:p-4 bg-muted rounded-lg">
+                  <p className="text-xs sm:text-sm text-muted-foreground capitalize mb-1">{key}</p>
+                  <p className="text-sm sm:text-base text-foreground font-medium">{value}</p>
                 </div>
               ))}
             </div>
