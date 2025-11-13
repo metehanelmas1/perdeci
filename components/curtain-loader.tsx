@@ -131,7 +131,7 @@ export function CurtainLoader() {
     }
 
     const onLoaded = () => {
-      video.playbackRate = 1.0
+      video.playbackRate = 1.50 // Perdeyi hızlandır
       
       // Mobil için video oynatma garantisi
       const playVideo = () => {
@@ -174,7 +174,7 @@ export function CurtainLoader() {
     <div className="fixed inset-0 z-[9999] pointer-events-none overflow-hidden">
       <video
         ref={videoRef}
-        src="/video-animation.mp4"
+        src="/video-animation.webm"
         className="hidden"
         muted
         playsInline
