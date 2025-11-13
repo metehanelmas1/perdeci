@@ -16,9 +16,17 @@ export function CurtainLoader() {
     const ctx = canvas.getContext("2d", { alpha: true })
     if (!ctx) return
 
+    // HD kalite ayarları - mobil ve desktop
+    const setQuality = () => {
+      ctx.imageSmoothingEnabled = true
+      ctx.imageSmoothingQuality = "high"
+    }
+    setQuality()
+
     const resize = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
+      setQuality()
     }
     resize()
     window.addEventListener("resize", resize)
@@ -131,12 +139,22 @@ export function CurtainLoader() {
 
     const onLoaded = () => {
       video.playbackRate = 1.0
-      video.play()
-        .then(() => {
-          if (rafRef.current) cancelAnimationFrame(rafRef.current)
-          rafRef.current = requestAnimationFrame(processFrame)
-        })
-        .catch((e) => console.error("Video play error:", e))
+      
+      // Mobil için video oynatma garantisi
+      const playVideo = () => {
+        video.play()
+          .then(() => {
+            if (rafRef.current) cancelAnimationFrame(rafRef.current)
+            rafRef.current = requestAnimationFrame(processFrame)
+          })
+          .catch((e) => {
+            console.error("Video play error:", e)
+            // Mobilde hata olursa tekrar dene
+            setTimeout(playVideo, 100)
+          })
+      }
+      
+      playVideo()
     }
 
     const onEnded = () => {
@@ -168,6 +186,9 @@ export function CurtainLoader() {
         muted
         playsInline
         preload="auto"
+        autoPlay
+        webkit-playsinline="true"
+        x5-playsinline="true"
       />
       <canvas
         ref={canvasRef}
