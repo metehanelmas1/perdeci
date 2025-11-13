@@ -3,6 +3,7 @@
 import { Heart } from "lucide-react"
 import { useState } from "react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 const products = [
   {
@@ -66,18 +67,24 @@ const products = [
 export function ProductGrid() {
   const [favorites, setFavorites] = useState<number[]>([])
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null)
+  const router = useRouter()
 
   const toggleFavorite = (id: number) => {
     setFavorites((prev) => (prev.includes(id) ? prev.filter((fav) => fav !== id) : [...prev, id]))
   }
 
+  const handleViewDetails = (id: number) => {
+    console.log("[v0] Navigating to product:", id)
+    router.push(`/urunler/${id}`)
+  }
+
   return (
     <div>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 md:mb-8">
-        <p className="text-muted-foreground text-sm md:text-base">
+      <div className="flex items-center justify-between mb-8">
+        <p className="text-muted-foreground">
           <span className="text-foreground font-medium">{products.length}</span> ürün bulundu
         </p>
-        <select className="px-4 py-2 border border-border rounded-lg bg-card text-foreground text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-accent w-full sm:w-auto">
+        <select className="px-4 py-2 border border-border rounded-lg bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-accent">
           <option>Önerilen</option>
           <option>Fiyat: Düşükten Yükseğe</option>
           <option>Fiyat: Yüksekten Düşüğe</option>
@@ -85,7 +92,7 @@ export function ProductGrid() {
         </select>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
           <div
             key={product.id}
@@ -112,13 +119,19 @@ export function ProductGrid() {
               </button>
             </div>
 
-            <div className="p-4 md:p-5">
+            <div className="p-5">
               <p className="text-xs text-muted-foreground mb-2">{product.category}</p>
               <h3 className="font-medium text-foreground mb-3 group-hover:text-accent transition-colors">
                 {product.name}
               </h3>
               <div className="flex items-center justify-between">
-                <button className="text-sm text-accent hover:underline">Detayları Gör</button>
+                <p className="text-sm text-accent font-medium">Fiyat Teklifi Al</p>
+                <button
+                  onClick={() => handleViewDetails(product.id)}
+                  className="text-sm text-accent hover:underline cursor-pointer"
+                >
+                  Detayları Gör
+                </button>
               </div>
             </div>
           </div>
