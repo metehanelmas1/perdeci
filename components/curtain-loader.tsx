@@ -107,8 +107,8 @@ export function CurtainLoader() {
     }
 
     const start = () => {
-      // Mobilde daha hızlı, desktop'ta biraz daha yavaş
-      video.playbackRate = isMobile ? 4.0 : 3.5
+      // Mobilde daha yavaş, desktop'ta hızlı
+      video.playbackRate = isMobile ? 2.5 : 3.5
       video.play().then(() => {
         render()
       })
