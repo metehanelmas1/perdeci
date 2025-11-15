@@ -23,13 +23,24 @@ export function CurtainLoader() {
     const pixelRatio = window.devicePixelRatio || 1
 
     const resize = () => {
-      // Mobilde performans için düşük çözünürlük
+      const width = window.innerWidth
+      const height = window.innerHeight
+      
+      // Mobilde akıllı çözünürlük - HD kalitede ama optimize
       if (isMobile) {
-        canvas.width = window.innerWidth * 0.75
-        canvas.height = window.innerHeight * 0.75
+        // Retina ekranlar için pixel ratio kullan ama sınırla
+        const optimalRatio = Math.min(pixelRatio, 2)
+        canvas.width = width * optimalRatio
+        canvas.height = height * optimalRatio
+        // CSS boyutu tam ekran
+        canvas.style.width = width + "px"
+        canvas.style.height = height + "px"
       } else {
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
+        // Desktop tam çözünürlük
+        canvas.width = width * pixelRatio
+        canvas.height = height * pixelRatio
+        canvas.style.width = width + "px"
+        canvas.style.height = height + "px"
       }
     }
     resize()
@@ -46,7 +57,11 @@ export function CurtainLoader() {
       const cw = canvas.width
       const ch = canvas.height
 
-      // cover mantığı
+      // Kaliteli render için image smoothing
+      ctx.imageSmoothingEnabled = true
+      ctx.imageSmoothingQuality = "high"
+
+      // cover mantığı - pixel perfect
       const scale = Math.max(cw / vw, ch / vh)
       const x = (cw - vw * scale) / 2
       const y = (ch - vh * scale) / 2
